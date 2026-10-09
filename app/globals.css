@@ -43,3 +43,12 @@ svg.logo {
 .form-title {
   @apply text-center text-xl font-bold;
 }
+.preview-grid {
+  @apply grid grid-cols-2 gap-6 mt-6;
+}
+.btn {
+  @apply inline-block rounded-md bg-primary px-4 py-2 font-semibold text-heading transition-colors;
+  &:hover {
+    @apply bg-secondary;
+  }
+}

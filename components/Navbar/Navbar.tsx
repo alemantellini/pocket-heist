@@ -17,7 +17,7 @@ export default function Navbar() {
         </header>
         <ul>
           <li>
-            <Link href="/heists/create">Create Heist</Link>
+            <Link href="/heists/create" className="btn">Create Heist</Link>
           </li>
         </ul>
       </nav>

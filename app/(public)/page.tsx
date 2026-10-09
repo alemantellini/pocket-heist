@@ -11,7 +11,7 @@ export default function Home() {
         <h1>
           P<Clock8 className="logo" strokeWidth={2.75} />cket Heist
         </h1>
-        <div>Tiny missions. Big office mischief.</div>
+        <div>Small steals. Big laughs. Zero HR involvement.</div>
         <p>
           Pocket Heist turns everyday office boredom into tiny, low-stakes
           capers. Assign a heist to a coworker, set the mission, and see who

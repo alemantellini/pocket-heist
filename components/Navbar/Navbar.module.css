@@ -1,0 +1,17 @@
+@reference "../../app/globals.css";
+
+.siteNav {
+  @apply bg-light px-2 py-4;
+}
+
+.siteNav nav {
+  @apply mx-auto max-w-6xl flex justify-between items-center;
+}
+
+.siteNav h1 {
+  @apply font-bold text-xl;
+}
+
+svg.logo {
+  display: inline-block;
+}

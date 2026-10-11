@@ -1,6 +1,7 @@
 // preview page for newly created UI components
 
 import Avatar from "@/components/Avatar";
+import AuthForm from "@/components/AuthForm";
 import Skeleton from "@/components/Skeleton";
 
 export default function PreviewPage() {
@@ -14,6 +15,8 @@ export default function PreviewPage() {
         <Skeleton />
         <Skeleton />
         <Skeleton />
+        <AuthForm mode="login" />
+        <AuthForm mode="signup" />
       </div>
     </div>
   );

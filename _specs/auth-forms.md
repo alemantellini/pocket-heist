@@ -46,11 +46,11 @@ Add authentication forms to the `/login` and `/signup` pages. Each form has an e
 
 ## Open Questions
 
-- Should signup include a confirm-password field, or is a single password field enough for now?
-- Should there be minimum password rules (length, complexity) on signup at this stage?
-- Which icon set should be used for the show/hide toggle (the project already uses `lucide-react`)?
-- Should the form be one shared component with a mode, or two separate components?
-- Should the "switch form" link live inside the form or below it?
+- Should signup include a confirm-password field, or is a single password field enough for now? No. A single password field plus the show/hide toggle is enough: the toggle lets users verify what they typed, and it keeps the form shorter.
+- Should there be minimum password rules (length, complexity) on signup at this stage? Yes, but only a minimum length of 8 characters, validated client-side with an inline error. Skip complexity rules (uppercase, symbols, etc.) for now; they add friction without much security gain. The server must enforce the same minimum.
+- Which icon set should be used for the show/hide toggle (the project already uses `lucide-react`)? `lucide-react`, since it's already a dependency. Use `Eye` / `EyeOff`, with an `aria-label` ("Show password" / "Hide password") and `aria-pressed` on the toggle button.
+- Should the form be one shared component with a mode, or two separate components? One shared `AuthForm` component with a `mode: "login" | "signup"` prop. The fields and logic overlap almost entirely; mode-specific differences (title, submit label, password validation, `autocomplete="current-password"` vs `"new-password"`) are handled by conditionals.
+- Should the "switch form" link live inside the form or below it? Below the form, outside the `<form>` element, as a separate line ("Don't have an account? Sign up" / "Already have an account? Log in"). This keeps it out of the form's tab order and submit semantics.
 
 ## Testing Guidelines
 

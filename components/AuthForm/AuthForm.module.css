@@ -1,7 +1,15 @@
 @reference "../../app/globals.css";
 
+.authForm {
+  @apply mx-auto mt-6 w-full max-w-sm;
+}
+
 .form {
-  @apply mx-auto mt-6 flex w-full max-w-sm flex-col gap-4;
+  @apply flex flex-col gap-4;
+}
+
+.error {
+  @apply text-error;
 }
 
 .field {
@@ -31,7 +39,7 @@
 }
 
 .switch {
-  @apply text-center text-sm;
+  @apply mt-4 text-center text-sm;
 
   & a {
     @apply text-primary underline;

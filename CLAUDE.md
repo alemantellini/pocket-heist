@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Pocket Heist — "Tiny missions. Big office mischief." A Next.js starter app (built for the Claude Code Masterclass) where users assign/complete small office "heists" (prank-like tasks). Most routes currently render placeholder content; no backend, data layer, or auth logic is implemented yet.
+Pocket Heist — "Steal small. Laugh big." A Next.js starter app (built for the Claude Code Masterclass) where users assign/complete small office "heists" (prank-like tasks). Most routes currently render placeholder content; no backend, data layer, or auth logic is implemented yet.
 
 ## Commands
 

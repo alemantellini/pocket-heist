@@ -1,0 +1,47 @@
+{
+  "session_id": "b89aedb4-09ee-4c5b-9c01-f466ceb81c54",
+  "transcript_path": "C:\\Users\\gusta\\.claude\\projects\\C--Users-gusta-OneDrive-Documents-Ale-POCKET-HEIST\\b89aedb4-09ee-4c5b-9c01-f466ceb81c54.jsonl",
+  "cwd": "C:\\Users\\gusta\\OneDrive\\Documents\\Ale\\POCKET_HEIST",
+  "scratchpad_dir": "C:\\Users\\gusta\\AppData\\Local\\Temp\\claude\\C--Users-gusta-OneDrive-Documents-Ale-POCKET-HEIST\\b89aedb4-09ee-4c5b-9c01-f466ceb81c54\\scratchpad",
+  "prompt_id": "92f26f90-98f3-4e3a-bf8d-2a613dff934a",
+  "permission_mode": "acceptEdits",
+  "effort": {
+    "level": "medium"
+  },
+  "hook_event_name": "PostToolUse",
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "C:\\Users\\gusta\\OneDrive\\Documents\\Ale\\POCKET_HEIST\\app\\(public)\\login\\page.tsx",
+    "old_string": "        <h2 className=\"form-title\">Log in to Your Account</h2>",
+    "new_string": "        <h1 className=\"form-title\">Log in to Your Account</h1>",
+    "replace_all": false
+  },
+  "tool_response": {
+    "filePath": "C:\\Users\\gusta\\OneDrive\\Documents\\Ale\\POCKET_HEIST\\app\\(public)\\login\\page.tsx",
+    "oldString": "        <h2 className=\"form-title\">Log in to Your Account</h2>",
+    "newString": "        <h1 className=\"form-title\">Log in to Your Account</h1>",
+    "originalFile": "export default function SignupPage() {\n  return (\n    <div className=\"center-content\">\n      <div className=\"page-content\">\n        <h2 className=\"form-title\">Log in to Your Account</h2>\n      </div>\n    </div>\n  )\n}",
+    "structuredPatch": [
+      {
+        "oldStart": 2,
+        "oldLines": 7,
+        "newStart": 2,
+        "newLines": 7,
+        "lines": [
+          "   return (",
+          "     <div className=\"center-content\">",
+          "       <div className=\"page-content\">",
+          "-        <h2 className=\"form-title\">Log in to Your Account</h2>",
+          "+        <h1 className=\"form-title\">Log in to Your Account</h1>",
+          "       </div>",
+          "     </div>",
+          "   )"
+        ]
+      }
+    ],
+    "userModified": false,
+    "replaceAll": false
+  },
+  "tool_use_id": "toolu_012sztgESDvsAQ4mCq7hGmXy",
+  "duration_ms": 85
+}

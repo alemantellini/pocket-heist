@@ -51,4 +51,7 @@ svg.logo {
   &:hover {
     @apply bg-secondary;
   }
+  &:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
 }

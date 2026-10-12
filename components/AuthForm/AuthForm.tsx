@@ -4,6 +4,7 @@ import { useState } from "react"
 import type { FormEvent } from "react"
 import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react"
+import { getAuthErrorMessage, signUp } from "@/lib/signup"
 import styles from "./AuthForm.module.css"
 
 type AuthFormProps = {
@@ -33,13 +34,16 @@ const MIN_PASSWORD_LENGTH = 8
 export default function AuthForm({ mode }: AuthFormProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [passwordError, setPasswordError] = useState("")
+  const [formError, setFormError] = useState("")
+  const [pending, setPending] = useState(false)
   const copy = COPY[mode]
   const passwordId = `${mode}-password`
   const errorId = `${passwordId}-error`
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
+    const email = String(data.get("email") ?? "")
     const password = String(data.get("password") ?? "")
 
     if (mode === "signup" && password.length < MIN_PASSWORD_LENGTH) {
@@ -51,8 +55,22 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
     setPasswordError("")
 
-    // temporary placeholder until real authentication is wired in
-    console.log({ email: data.get("email"), password })
+    if (mode === "login") {
+      // temporary placeholder until the login flow is wired in
+      console.log({ email, password })
+      return
+    }
+
+    setFormError("")
+    setPending(true)
+
+    try {
+      await signUp(email, password)
+    } catch (error) {
+      setFormError(getAuthErrorMessage(error))
+    } finally {
+      setPending(false)
+    }
   }
 
   return (
@@ -99,8 +117,14 @@ export default function AuthForm({ mode }: AuthFormProps) {
           )}
         </div>
 
-        <button type="submit" className="btn">
-          {copy.submit}
+        {formError && (
+          <p role="alert" className={styles.error}>
+            {formError}
+          </p>
+        )}
+
+        <button type="submit" className="btn" disabled={pending}>
+          {pending ? "Signing up…" : copy.submit}
         </button>
       </form>
 

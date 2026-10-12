@@ -1,12 +1,12 @@
 import { act, render, screen } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-const { unsubscribe, onAuthStateChanged } = vi.hoisted(() => ({
+const { unsubscribe, onIdTokenChanged } = vi.hoisted(() => ({
   unsubscribe: vi.fn(),
-  onAuthStateChanged: vi.fn(),
+  onIdTokenChanged: vi.fn(),
 }))
 
-vi.mock("firebase/auth", () => ({ onAuthStateChanged }))
+vi.mock("firebase/auth", () => ({ onIdTokenChanged }))
 vi.mock("@/lib/firebase", () => ({ auth: {} }))
 
 // component imports
@@ -15,7 +15,7 @@ import AuthProvider, { useUser } from "@/components/AuthProvider"
 type AuthCallback = (user: unknown) => void
 
 function emit(user: unknown) {
-  const callback = onAuthStateChanged.mock.calls[0][1] as AuthCallback
+  const callback = onIdTokenChanged.mock.calls[0][1] as AuthCallback
   act(() => callback(user))
 }
 
@@ -42,7 +42,7 @@ function renderWithProvider(consumers = 1) {
 describe("AuthProvider / useUser", () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    onAuthStateChanged.mockReturnValue(unsubscribe)
+    onIdTokenChanged.mockReturnValue(unsubscribe)
   })
 
   it("reports loading until the first auth callback fires", () => {
@@ -93,7 +93,7 @@ describe("AuthProvider / useUser", () => {
   it("subscribes once and unsubscribes on unmount", () => {
     const { unmount } = renderWithProvider(2)
 
-    expect(onAuthStateChanged).toHaveBeenCalledTimes(1)
+    expect(onIdTokenChanged).toHaveBeenCalledTimes(1)
     expect(unsubscribe).not.toHaveBeenCalled()
 
     unmount()
@@ -103,7 +103,7 @@ describe("AuthProvider / useUser", () => {
 
   it("stops loading if the listener reports an error", () => {
     renderWithProvider()
-    const onError = onAuthStateChanged.mock.calls[0][2] as () => void
+    const onError = onIdTokenChanged.mock.calls[0][2] as () => void
     act(() => onError())
 
     expect(screen.getByTestId("loading")).toHaveTextContent("false")

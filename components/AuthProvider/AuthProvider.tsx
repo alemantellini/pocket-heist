@@ -1,6 +1,6 @@
 "use client"
 
-import { onAuthStateChanged } from "firebase/auth"
+import { onIdTokenChanged } from "firebase/auth"
 import { useEffect, useState } from "react"
 import { auth } from "@/lib/firebase"
 import { AuthContext, type AuthState } from "./AuthContext"
@@ -13,7 +13,9 @@ export default function AuthProvider({
   const [state, setState] = useState<AuthState>({ user: null, loading: true })
 
   useEffect(() => {
-    return onAuthStateChanged(
+    // onIdTokenChanged also fires on token refresh, which is how a changed
+    // displayName reaches consumers
+    return onIdTokenChanged(
       auth,
       (firebaseUser) => {
         setState({

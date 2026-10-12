@@ -1,0 +1,92 @@
+// word sets for random codenames; every word is unique across all three sets
+export const ADJECTIVES = [
+  "Silent",
+  "Swift",
+  "Sneaky",
+  "Clever",
+  "Daring",
+  "Sly",
+  "Bold",
+  "Wily",
+  "Nimble",
+  "Cunning",
+  "Brave",
+  "Quiet",
+  "Fierce",
+  "Lucky",
+  "Rogue",
+  "Hidden",
+  "Phantom",
+  "Shadow",
+  "Wicked",
+  "Mighty",
+  "Crafty",
+  "Savvy",
+  "Slick",
+  "Steady",
+  "Zesty",
+]
+
+export const MATERIALS = [
+  "Copper",
+  "Iron",
+  "Crimson",
+  "Velvet",
+  "Neon",
+  "Glass",
+  "Amber",
+  "Cobalt",
+  "Ivory",
+  "Onyx",
+  "Silver",
+  "Golden",
+  "Scarlet",
+  "Marble",
+  "Jade",
+  "Violet",
+  "Ember",
+  "Frost",
+  "Granite",
+  "Indigo",
+  "Midnight",
+  "Obsidian",
+  "Pearl",
+  "Rusty",
+  "Steel",
+]
+
+export const ANIMALS = [
+  "Fox",
+  "Raven",
+  "Viper",
+  "Panther",
+  "Falcon",
+  "Badger",
+  "Otter",
+  "Lynx",
+  "Magpie",
+  "Weasel",
+  "Cobra",
+  "Wolf",
+  "Owl",
+  "Jackal",
+  "Heron",
+  "Mongoose",
+  "Raccoon",
+  "Coyote",
+  "Gecko",
+  "Hawk",
+  "Ferret",
+  "Mantis",
+  "Marten",
+  "Possum",
+  "Stoat",
+]
+
+function pick(words: string[]) {
+  return words[Math.floor(Math.random() * words.length)]
+}
+
+export function generateCodename() {
+  return `${pick(ADJECTIVES)}${pick(MATERIALS)}${pick(ANIMALS)}`
+}

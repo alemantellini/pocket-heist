@@ -2,10 +2,16 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // TEST MODE: anyone can read and write every document until the date below.
-    // Replace these with proper per-user rules before going live.
-    match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2026, 11, 11);
+    // a user can read and write only their own document, which holds exactly
+    // their id and codename (never an email)
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['id', 'codename'])
+        && request.resource.data.keys().hasAll(['id', 'codename'])
+        && request.resource.data.id == request.auth.uid
+        && request.resource.data.codename is string;
     }
   }
 }

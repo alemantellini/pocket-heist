@@ -12,6 +12,13 @@
   @apply font-bold text-xl;
 }
 
+/* matches the Figma "Create New Heist" button (purple-600 → pink-600 gradient) */
+.createLink {
+  @apply inline-flex h-10 items-center gap-2 px-4 rounded-[10px] text-white;
+  @apply bg-linear-to-r from-purple-600 to-pink-600;
+  @apply text-base font-normal tracking-[-0.3125px];
+}
+
 svg.logo {
   display: inline-block;
 }

@@ -12,10 +12,10 @@ describe("Navbar", () => {
     expect(heading).toBeInTheDocument()
   })
 
-  it("renders the Create Heist link", () => {
+  it("renders the Create New Heist link", () => {
     render(<Navbar />)
 
-    const createLink = screen.getByRole("link", { name: /create heist/i })
+    const createLink = screen.getByRole("link", { name: /create new heist/i })
     expect(createLink).toBeInTheDocument()
     expect(createLink).toHaveAttribute("href", "/heists/create")
   })

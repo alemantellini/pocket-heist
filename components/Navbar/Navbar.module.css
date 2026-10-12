@@ -8,6 +8,10 @@
   @apply mx-auto max-w-6xl flex justify-between items-center;
 }
 
+.siteNav ul {
+  @apply flex items-center gap-3;
+}
+
 .siteNav h1 {
   @apply font-bold text-xl;
 }

@@ -1,0 +1,11 @@
+@reference "../../app/globals.css";
+
+/* same look as the navbar's "Create New Heist" button (purple-600 → pink-600 gradient) */
+.logout {
+  @apply inline-flex h-10 items-center gap-2 px-4 rounded-[10px] text-white cursor-pointer;
+  @apply bg-linear-to-r from-purple-600 to-pink-600;
+  @apply text-base font-normal tracking-[-0.3125px];
+  &:disabled {
+    @apply cursor-not-allowed opacity-60;
+  }
+}

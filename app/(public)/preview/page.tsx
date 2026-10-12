@@ -3,11 +3,13 @@
 import Avatar from "@/components/Avatar";
 import AuthForm from "@/components/AuthForm";
 import Skeleton from "@/components/Skeleton";
+import UserStatus from "@/components/UserStatus";
 
 export default function PreviewPage() {
   return (
     <div className="page-content">
       <h2>Preview</h2>
+      <UserStatus />
       <div className="preview-grid">
         <Avatar name="mario" />
         <Avatar name="MarioRossi" />

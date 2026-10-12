@@ -1,0 +1,5 @@
+@reference "../../app/globals.css";
+
+.status {
+  @apply text-body text-sm;
+}

@@ -4,41 +4,51 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Pocket Heist — "Steal small. Laugh big." A Next.js starter app (built for the Claude Code Masterclass) where users assign/complete small office "heists" (prank-like tasks). Most routes currently render placeholder content; no backend, data layer, or auth logic is implemented yet.
+Pocket Heist — "Steal small. Laugh big." A Next.js starter app (built for the Claude Code Masterclass) where users assign/complete small office "heists" (prank-like tasks). There is no backend, data layer, or auth yet: most routes render placeholder content, and the login/signup forms only `console.log` their input.
 
 ## Commands
 
 ```bash
-npm run dev     # start dev server (http://localhost:3000)
-npm run build   # production build
-npm run start   # run production build
-npm run lint    # eslint
-npm test        # run vitest test suite (watch mode by default)
+npm run dev     # dev server at http://localhost:3000
+npm run build   # production build (also catches server/client component boundary errors)
+npm run lint    # eslint (next core-web-vitals + typescript configs)
+npm test        # vitest in watch mode; use `npx vitest run` for a single pass
 ```
 
-Run a single test file: `npm test -- tests/components/Navbar.test.tsx`
+Run a single test file: `npm test -- tests/components/AuthForm.test.tsx`
 
 ## Architecture
 
-- **Next.js App Router** with two parallel route groups under `app/`, each with its own layout:
-  - `app/(public)/` — unauthenticated routes (`/`, `/login`, `/signup`, `/preview`). Layout has no nav.
-  - `app/(dashboard)/` — authenticated routes (`/heists`, `/heists/create`, `/heists/[id]`). Layout wraps children in `<Navbar />`.
-  - Route groups share no layout logic with each other; `app/layout.tsx` (root) only sets metadata and imports `globals.css`.
-- Splash page (`app/(public)/page.tsx`) is intended to redirect based on auth state (logged in → `/heists`, else → `/login`), but this redirect is not yet implemented — see the comment at the top of that file.
-- `app/(public)/preview/page.tsx` is a scratch page for previewing new UI components in isolation before wiring them into real routes.
-- Components live under `components/<ComponentName>/` as a folder with the component file, a co-located CSS module, and an `index.ts` barrel export (see `components/Navbar/`). Import via the barrel (`@/components/Navbar`), not the file directly.
-- Path alias `@/*` maps to the repo root (configured in `tsconfig.json`).
-- Tests live under `tests/`, mirroring the source structure (e.g. `components/Navbar/Navbar.tsx` → `tests/components/Navbar.test.tsx`), using Vitest + React Testing Library + jsdom.
+- **Next.js App Router with two route groups** under `app/`, each with its own layout and no shared layout logic:
+  - `app/(public)/`: unauthenticated routes (`/`, `/login`, `/signup`, `/preview`). Layout wraps pages in `<main className="public">`, no nav.
+  - `app/(dashboard)/`: authenticated routes (`/heists`, `/heists/create`, `/heists/[id]`). Layout renders `<Navbar />` above the page.
+  - Root `app/layout.tsx` only sets metadata and imports `globals.css`.
+- The splash page (`app/(public)/page.tsx`) should redirect by auth state (logged in → `/heists`, else → `/login`); this is not implemented yet (see the comment at the top of the file).
+- `app/(public)/preview/page.tsx` is a scratch page for previewing new components in isolation before wiring them into real routes. Add new components there.
+- Pages are server components. Anything with state or event handlers lives in a component marked `"use client"` (e.g. `components/AuthForm`), so the pages themselves stay server components.
+- **Components** live in `components/<Name>/` with the component file, a co-located `*.module.css`, and an `index.ts` barrel. Import via the barrel (`@/components/AuthForm`), not the file. `@/*` maps to the repo root.
+- **Tests** live in `tests/`, mirroring source (`components/Avatar/Avatar.tsx` → `tests/components/Avatar.test.tsx`). Vitest + React Testing Library + `@testing-library/user-event` on jsdom; `vitest.setup.ts` loads the jest-dom matchers.
+- Icons come from `lucide-react` (already a dependency); prefer it over adding another icon library.
 
 ## Styling
 
-- Tailwind CSS v4, configured via `@theme` in `app/globals.css` (not a `tailwind.config` file) — custom tokens like `--color-primary`, `--color-dark`, `--color-heading` are defined there.
-- Generic layout/utility classes (`.page-content`, `.center-content`, `.form-title`) are defined once in `globals.css` and reused across pages rather than repeating Tailwind utility strings.
-- Component-specific styles use CSS Modules (`*.module.css`) co-located with the component.
+- Tailwind CSS v4, configured via `@theme` tokens in `app/globals.css` (no `tailwind.config` file): `primary`, `secondary`, `dark`, `light`, `lighter`, `success`, `error`, `heading`, `body`.
+- Shared classes (`.page-content`, `.center-content`, `.form-title`, `.btn`) are defined once in `globals.css` and reused rather than repeating utility strings.
+- CSS modules must start with `@reference "../../app/globals.css";` to use theme tokens inside `@apply`.
 
-## Additional Coding Preferences
+## Workflow
 
-- Do NOT use semicolons for JavaScript or TypeScript code.
-- Do NOT apply tailwind classes directly in component templates unless essential or just 1 at most. If an element needs more than a single tailwind class, combine them into a custom class using the `@apply` directive.
-- Use minimal project dependencies where possible.
-- Use the `git switch -c` command to switch to new branches, not `git checkout`.
+- Default branch is `master` (there is no `main`). There is no git remote.
+- Feature work flows through the project slash commands in `.claude/commands/`: `/spec` writes `_specs/<slug>.md` from `_specs/template.md` and creates a `claude/feature/<slug>` branch; approved plans are saved to `_plans/<slug>.md`; `/component` builds components test-first; `/commit-message` drafts emoji-prefixed commits (`✨ feat:`, `🐛 fix:`, `🔨 refactor:`, `📝 docs:`, `🎨 style:`, `✅ test:`, `⚡ perf:`).
+- A PostToolUse hook in `.claude/settings.local.json` runs `npx prettier --write` on every edited `.ts`/`.tsx` file. `.prettierrc` sets `"semi": false` to keep it consistent with the no-semicolon rule; don't remove it.
+
+## Coding Preferences
+
+- Do NOT use semicolons in JavaScript or TypeScript.
+- Do NOT put more than one Tailwind class directly on an element in a template. Combine them into a custom class with `@apply` (in the component's CSS module, or `globals.css` if shared).
+- Keep project dependencies minimal.
+- Create branches with `git switch -c`, not `git checkout`.
+
+## Checking Documentation
+
+- **important:** When implementing any lib/framework-specific features, ALWAYS check the appropriate lib/framework documentation using the Context7 MCP server before writing any code.

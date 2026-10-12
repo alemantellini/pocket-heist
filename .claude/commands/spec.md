@@ -1,6 +1,6 @@
 ---
 description: Create a feature spec file and branch from a short idea
-argument-hint: Short feature description
+argument-hint: "[Short feature description, optional: 'figma: <component-link>']"
 allowed-tools: Read, Write, Glob, Bash(git switch:*)
 ---
 
@@ -15,6 +15,7 @@ Your job will be to turn the user input above into:
 - A human friendly feature title in kebab-case (e.g. new-heist-form)
 - A safe git branch name not already taken (e.g. claude/feature/new-heist-form)
 - A detailed markdown spec file under the \_specs/ directory
+- An optional figma design note, if a figma design link is present
 
 Then save the spec file to disk and print a short summary of what you did.
 
@@ -46,7 +47,34 @@ From `$ARGUMENTS`, extract:
    - Format: `claude/feature/<feature_slug>`
    - Example: `claude/feature/card-component`.
 
+4. `figma_hint` (optional)
+
+- If `$ARGUMENTS` contains the substring `figma`:
+- Then the text after figma: is the figma component link.
+- Trim whitespace.
+- Example input:
+  - `/spec Card component, figma: https://www.figma.com/design/some-link`
+  - `figma_hint` becomes `https://www.figma.com/design/some-link`.
+
 If you cannot infer a sensible feature_title and feature_slug, ask the user to clarify instead of guessing.
+
+## Step 2.5 Pull Figma context when needed
+
+If `figma_hint` is present and Figma MCP tools are available:
+
+1. Use the Figma MCP tools to locate the component, layer or frame.
+2. Extract only information that is useful for implementation, such as:
+   - Dimensions and layout (grid, spacing, alignment)
+   - Key typography tokens (font family, size, weight)
+   - Color tokens and semantic usage (primary, surface, border, error etc.)
+   - Border radius, shadows, and any notable visual detail
+   - Icons, buttons, links or other UI elements
+3. Summarise this as 3 to 8 concise bullet points and also leave a link to the figma component for future lookups.
+4. If lookup fails or the tools are not available, record a note like:
+
+- `"Design reference could not be retrieved. See Figma manually for details."`
+
+Always summarise into human friendly notes.
 
 ## Step 3. Switch to a new Git branch
 
@@ -61,7 +89,7 @@ Create a markdown spec document that Plan mode can use directly and save it in t
 After the file is saved, respond to the user with a short summary in this exact format:
 
 Branch: <branch_name>
-Spec file: _specs/<feature_slug>.md
+Spec file: \_specs/<feature_slug>.md
 Title: <feature_title>
 
 Do not repeat the full spec in the chat output unless the user explicitly asks to see it. The main goal is to save the spec file and report where it lives and what branch name to use.

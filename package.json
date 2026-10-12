@@ -10,6 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "firebase": "^13.0.0",
     "lucide-react": "^0.556.0",
     "next": "^16.0.7",
     "react": "19.2.0",

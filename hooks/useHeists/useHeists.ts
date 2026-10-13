@@ -52,14 +52,12 @@ function buildQuery(type: HeistQueryType, uid: string) {
         orderBy("createdAt", "desc"),
       )
     case "expired":
-      // two inequality filters, so both fields are ordered explicitly to
-      // match the composite index in firestore.indexes.json
+      // a heist is expired once its deadline has passed, whether or not a
+      // final status has been set; one field, so no composite index is needed
       return query(
         heists,
         where("deadline", "<", now),
-        where("finalStatus", "!=", null),
         orderBy("deadline", "desc"),
-        orderBy("finalStatus", "asc"),
       )
   }
 }

@@ -87,16 +87,15 @@ describe("useHeists", () => {
     )
   })
 
-  it("queries past deadlines with a final status, for any user, for expired", () => {
+  it("queries all past deadlines, whatever the final status, for any user, for expired", () => {
     renderHook(() => useHeists("expired"))
 
     expect(query).toHaveBeenCalledWith(
       "heists-collection",
       ["where", "deadline", "<", NOW],
-      ["where", "finalStatus", "!=", null],
       ["orderBy", "deadline", "desc"],
-      ["orderBy", "finalStatus", "asc"],
     )
+    expect(where).not.toHaveBeenCalledWith("finalStatus", expect.anything(), expect.anything())
     expect(where).not.toHaveBeenCalledWith("assignedTo", "==", expect.anything())
     expect(where).not.toHaveBeenCalledWith("createdBy", "==", expect.anything())
   })

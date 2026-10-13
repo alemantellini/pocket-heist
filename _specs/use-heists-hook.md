@@ -87,6 +87,7 @@ Add a `useHeists` hook that reads heists from the `heists` collection in Firesto
     - `assignedTo` ASC + `deadline` ASC (active)
     - `createdBy` ASC + `createdAt` DESC (assigned)
     - `finalStatus` ASC + `deadline` ASC (expired: two inequality filters, `deadline < now` and `finalStatus != null`)
+- **Update:** `expired` no longer requires a final status. It returns every heist whose deadline has passed (most recently expired first), because nothing can set a final status yet. The `finalStatus` + `deadline` composite index was removed since the query now filters on a single field.
 
 ## Testing Guidelines
 

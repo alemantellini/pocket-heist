@@ -1,0 +1,13 @@
+@reference "../../app/globals.css";
+
+.list {
+  @apply mt-2 flex flex-col gap-1 text-heading;
+}
+
+.message {
+  @apply mt-2 text-sm;
+}
+
+.error {
+  @apply mt-2 text-sm text-error;
+}

@@ -15,9 +15,11 @@ service cloud.firestore {
         && request.resource.data.codename is string;
     }
 
-    // heists can be created by a signed-in user as themselves; reads, updates
-    // and deletes are denied until the features that need them exist
+    // any signed-in user can read heists (the expired list covers everyone's);
+    // they can be created by a signed-in user as themselves; updates and
+    // deletes are denied until the features that need them exist
     match /heists/{heistId} {
+      allow read: if request.auth != null;
       allow create: if request.auth != null
         && request.resource.data.keys().hasOnly([
           'title', 'description', 'createdBy', 'createdByCodename',

@@ -1,0 +1,9 @@
+@reference "../../app/globals.css";
+
+.siteFooter {
+  @apply bg-light px-2 py-6 text-center text-sm;
+}
+
+.siteFooter p + p {
+  @apply mt-1;
+}

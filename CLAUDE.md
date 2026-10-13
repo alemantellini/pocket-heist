@@ -20,11 +20,11 @@ Run a single test file: `npm test -- tests/components/AuthForm.test.tsx`
 ## Architecture
 
 - **Next.js App Router with two route groups** under `app/`, each with its own layout and no shared layout logic:
-  - `app/(public)/`: unauthenticated routes (`/`, `/login`, `/signup`, `/preview`). Layout wraps pages in `<main className="public">`, no nav.
-  - `app/(dashboard)/`: authenticated routes (`/heists`, `/heists/create`, `/heists/[id]`). Layout renders `<Navbar />` above the page.
+  - `app/(public)/`: routes for signed-out visitors only (`/`, `/login`, `/signup`). Layout wraps pages in `<main className="public">` and a `<RouteGuard require="guest">`, no nav.
+  - `app/(dashboard)/`: routes for signed-in users only (`/heists`, `/heists/create`, `/heists/[id]`). Layout wraps `<Navbar />` and the page in a `<RouteGuard require="user">`.
   - Root `app/layout.tsx` only sets metadata and imports `globals.css`.
-- The splash page (`app/(public)/page.tsx`) should redirect by auth state (logged in → `/heists`, else → `/login`); this is not implemented yet (see the comment at the top of the file).
-- `app/(public)/preview/page.tsx` is a scratch page for previewing new components in isolation before wiring them into real routes. Add new components there.
+- Route protection is client-side: `components/RouteGuard` (using `useUser`) shows `components/AuthLoader` until auth is known, redirects with `router.replace` (signed out in dashboard → `/login`, signed in in public → `/heists`), and only then renders the page. The splash page `/` is covered by the public guard.
+- `app/preview/page.tsx` (outside both route groups, so reachable signed in or out) is a scratch page for previewing new components in isolation before wiring them into real routes. Add new components there.
 - Pages are server components. Anything with state or event handlers lives in a component marked `"use client"` (e.g. `components/AuthForm`), so the pages themselves stay server components.
 - **Components** live in `components/<Name>/` with the component file, a co-located `*.module.css`, and an `index.ts` barrel. Import via the barrel (`@/components/AuthForm`), not the file. `@/*` maps to the repo root.
 - **Tests** live in `tests/`, mirroring source (`components/Avatar/Avatar.tsx` → `tests/components/Avatar.test.tsx`). Vitest + React Testing Library + `@testing-library/user-event` on jsdom; `vitest.setup.ts` loads the jest-dom matchers.

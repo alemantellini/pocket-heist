@@ -1,0 +1,13 @@
+@reference "../../app/globals.css";
+
+.loader {
+  @apply flex min-h-lvh items-center justify-center;
+}
+
+.spinner {
+  @apply animate-spin text-primary motion-reduce:animate-none;
+}
+
+.label {
+  @apply sr-only;
+}

@@ -1,10 +1,8 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "@/lib/firebase"
 
-// resolves with the signed-in user's display name; useUser updates through the
-// global auth listener
+// useUser updates through the global auth listener, and route guards handle
+// the redirect afterwards
 export async function logIn(email: string, password: string) {
-  const { user } = await signInWithEmailAndPassword(auth, email, password)
-
-  return user.displayName
+  await signInWithEmailAndPassword(auth, email, password)
 }

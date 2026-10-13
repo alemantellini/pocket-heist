@@ -2,13 +2,15 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 
-const { createUser, signIn, updateProfile, setDoc, doc } = vi.hoisted(() => ({
-  createUser: vi.fn(),
-  signIn: vi.fn(),
-  updateProfile: vi.fn(),
-  setDoc: vi.fn(),
-  doc: vi.fn(),
-}))
+const { createUser, signIn, updateProfile, setDoc, doc, setPendingSignup } =
+  vi.hoisted(() => ({
+    createUser: vi.fn(),
+    signIn: vi.fn(),
+    updateProfile: vi.fn(),
+    setDoc: vi.fn(),
+    doc: vi.fn(),
+    setPendingSignup: vi.fn(),
+  }))
 
 vi.mock("firebase/auth", () => ({
   createUserWithEmailAndPassword: createUser,
@@ -17,6 +19,9 @@ vi.mock("firebase/auth", () => ({
 }))
 vi.mock("firebase/firestore", () => ({ doc, setDoc }))
 vi.mock("@/lib/firebase", () => ({ auth: {}, db: {} }))
+vi.mock("@/components/AuthProvider", () => ({
+  useUser: () => ({ setPendingSignup }),
+}))
 
 // component imports
 import AuthForm from "@/components/AuthForm"
@@ -95,26 +100,13 @@ describe("AuthForm", () => {
     expect(log).not.toHaveBeenCalled()
   })
 
-  it("replaces the form with a focused welcome message after login", async () => {
+  it("does not show a success message after login", async () => {
     render(<AuthForm mode="login" />)
 
     await fillAndSubmitLogin()
 
-    const status = await screen.findByRole("status")
-    expect(status).toHaveTextContent("Welcome back, SilentCopperFox!")
-    expect(status).toHaveFocus()
-    expect(screen.queryByLabelText("Email")).not.toBeInTheDocument()
-  })
-
-  it("shows a generic welcome when the user has no display name", async () => {
-    signIn.mockResolvedValue({ user: { displayName: null } })
-    render(<AuthForm mode="login" />)
-
-    await fillAndSubmitLogin()
-
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      /^Welcome back!$/,
-    )
+    expect(signIn).toHaveBeenCalled()
+    expect(screen.queryByRole("status")).not.toBeInTheDocument()
   })
 
   it("shows one generic error for wrong credentials and keeps the email", async () => {
@@ -182,6 +174,32 @@ describe("AuthForm", () => {
       codename: displayName,
     })
     expect(firebaseUser.getIdToken).toHaveBeenCalledWith(true)
+  })
+
+  it("flags a pending signup while signing up, then clears it", async () => {
+    render(<AuthForm mode="signup" />)
+
+    await fillAndSubmitSignup()
+
+    expect(setPendingSignup.mock.calls).toEqual([[true], [false]])
+  })
+
+  it("clears the pending signup flag when signup fails", async () => {
+    createUser.mockRejectedValue({ code: "auth/email-already-in-use" })
+    render(<AuthForm mode="signup" />)
+
+    await fillAndSubmitSignup()
+
+    await screen.findByRole("alert")
+    expect(setPendingSignup.mock.calls).toEqual([[true], [false]])
+  })
+
+  it("does not flag a pending signup on login", async () => {
+    render(<AuthForm mode="login" />)
+
+    await fillAndSubmitLogin()
+
+    expect(setPendingSignup).not.toHaveBeenCalled()
   })
 
   it("shows a readable error when the email is already in use", async () => {

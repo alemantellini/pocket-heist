@@ -1,7 +1,7 @@
 "use client"
 
 import { onIdTokenChanged } from "firebase/auth"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { auth } from "@/lib/firebase"
 import { AuthContext, type AuthState } from "./AuthContext"
 
@@ -11,6 +11,7 @@ export default function AuthProvider({
   children: React.ReactNode
 }) {
   const [state, setState] = useState<AuthState>({ user: null, loading: true })
+  const [pendingSignup, setPendingSignup] = useState(false)
 
   useEffect(() => {
     // onIdTokenChanged also fires on token refresh, which is how a changed
@@ -35,5 +36,10 @@ export default function AuthProvider({
     )
   }, [])
 
-  return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>
+  const value = useMemo(
+    () => ({ ...state, pendingSignup, setPendingSignup }),
+    [state, pendingSignup],
+  )
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

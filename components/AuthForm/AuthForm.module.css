@@ -8,10 +8,6 @@
   @apply flex flex-col gap-4;
 }
 
-.success {
-  @apply mx-auto mt-6 w-full max-w-sm text-center text-success outline-none;
-}
-
 .error {
   @apply text-error;
 }

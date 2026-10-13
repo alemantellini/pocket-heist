@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import type { FormEvent } from "react"
 import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react"
+import { useUser } from "@/components/AuthProvider"
 import { logIn } from "@/lib/login"
 import { getAuthErrorMessage, signUp } from "@/lib/signup"
 import styles from "./AuthForm.module.css"
@@ -39,17 +40,10 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [passwordError, setPasswordError] = useState("")
   const [formError, setFormError] = useState("")
   const [pending, setPending] = useState(false)
-  // set after a successful login; replaces the form with a welcome message
-  const [welcome, setWelcome] = useState<{ name: string | null } | null>(null)
-  const welcomeRef = useRef<HTMLDivElement>(null)
+  const { setPendingSignup } = useUser()
   const copy = COPY[mode]
   const passwordId = `${mode}-password`
   const errorId = `${passwordId}-error`
-
-  // the form disappears on success, so move focus to the message
-  useEffect(() => {
-    if (welcome) welcomeRef.current?.focus()
-  }, [welcome])
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -69,30 +63,22 @@ export default function AuthForm({ mode }: AuthFormProps) {
     setFormError("")
     setPending(true)
 
+    // route guards redirect once the user is authenticated, which for signup
+    // is before the profile is saved, so hold them back until it finishes
+    if (mode === "signup") setPendingSignup(true)
+
     try {
       if (mode === "login") {
-        setWelcome({ name: await logIn(email, password) })
+        await logIn(email, password)
       } else {
         await signUp(email, password)
       }
     } catch (error) {
       setFormError(getAuthErrorMessage(error))
     } finally {
+      if (mode === "signup") setPendingSignup(false)
       setPending(false)
     }
-  }
-
-  if (welcome) {
-    return (
-      <div
-        ref={welcomeRef}
-        role="status"
-        tabIndex={-1}
-        className={styles.success}
-      >
-        {welcome.name ? `Welcome back, ${welcome.name}!` : "Welcome back!"}
-      </div>
-    )
   }
 
   return (

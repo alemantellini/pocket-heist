@@ -1,6 +1,6 @@
-// this page should be used only as a splash page to decide where a user should be navigated to
-// when logged in --> to /heists
-// when not logged in --> to /login
+// splash page. The redirect for logged in users (--> /heists) is handled by
+// the RouteGuard in the (public) layout; logged out users stay here and can
+// follow the links to /login and /signup
 
 import { Clock8 } from "lucide-react";
 

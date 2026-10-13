@@ -110,6 +110,28 @@ describe("AuthProvider / useUser", () => {
     expect(screen.getByTestId("user")).toHaveTextContent("null")
   })
 
+  it("tracks a pending signup", () => {
+    function PendingConsumer() {
+      const { pendingSignup, setPendingSignup } = useUser()
+      return (
+        <button onClick={() => setPendingSignup(true)}>
+          {String(pendingSignup)}
+        </button>
+      )
+    }
+    render(
+      <AuthProvider>
+        <PendingConsumer />
+      </AuthProvider>,
+    )
+
+    expect(screen.getByRole("button")).toHaveTextContent("false")
+
+    act(() => screen.getByRole("button").click())
+
+    expect(screen.getByRole("button")).toHaveTextContent("true")
+  })
+
   it("throws when used outside the provider", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {})
 

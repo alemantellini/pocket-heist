@@ -1,0 +1,84 @@
+@reference "../../app/globals.css";
+
+/* design from Figma: Pocket-Heist, ExpiredHeistCard (history row, node 1:443) */
+.card {
+  @apply flex flex-col gap-2 rounded-[10px] border border-outline/50 bg-lighter/50 p-4;
+}
+
+.topRow {
+  @apply flex flex-wrap items-center gap-3;
+}
+
+/* status colors: the icon takes the text color, the badge adds bg and border */
+.iconSuccess {
+  @apply shrink-0 text-success;
+}
+
+.iconFailure {
+  @apply shrink-0 text-error;
+}
+
+.iconUnresolved {
+  @apply shrink-0 text-body;
+}
+
+.title {
+  @apply min-w-0 flex-1 text-base font-medium tracking-[-0.3125px];
+}
+
+.link {
+  @apply wrap-anywhere text-heading;
+  &:hover {
+    @apply text-primary;
+  }
+  &:focus-visible {
+    @apply rounded-sm outline-2 outline-offset-2 outline-primary;
+  }
+}
+
+.meta {
+  @apply flex items-center gap-1.5 text-sm tracking-[-0.15px] text-body;
+}
+
+.date {
+  composes: meta;
+}
+
+.srOnly {
+  @apply sr-only;
+}
+
+.badge {
+  @apply rounded-sm border px-2 py-0.5 text-xs uppercase tracking-[0.6px];
+}
+
+.badgeSuccess {
+  composes: badge;
+  @apply border-success/20 bg-success/5 text-success;
+}
+
+.badgeFailure {
+  composes: badge;
+  @apply border-error/20 bg-error/5 text-error;
+}
+
+.badgeUnresolved {
+  composes: badge;
+  @apply border-outline bg-lighter text-body;
+}
+
+.people {
+  @apply flex flex-wrap items-center gap-4;
+}
+
+.person {
+  composes: meta;
+}
+
+.assignee {
+  @apply text-primary;
+}
+
+.creator {
+  @apply text-secondary;
+}

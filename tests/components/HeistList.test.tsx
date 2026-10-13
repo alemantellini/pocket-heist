@@ -26,15 +26,29 @@ describe("HeistList", () => {
     expect(useHeists).toHaveBeenCalledWith("expired")
   })
 
-  it("lists only the heist titles for expired heists", () => {
-    useHeists.mockReturnValue({ heists, loading: false, error: null })
+  it("shows an expired card linking to each expired heist", () => {
+    useHeists.mockReturnValue({
+      heists: heists.map((heist) => ({
+        ...heist,
+        createdByCodename: "shadowfox",
+        assignedToCodename: "quietowl",
+        deadline: new Date(2025, 11, 5, 17, 0),
+        finalStatus: "success",
+      })),
+      loading: false,
+      error: null,
+    })
 
     render(<HeistList type="expired" />)
 
-    expect(screen.getAllByRole("listitem").map((item) => item.textContent)).toEqual(
-      ["Swap the office plant", "Jelly in the stapler"],
-    )
-    expect(screen.queryByRole("link")).not.toBeInTheDocument()
+    expect(screen.getAllByRole("listitem")).toHaveLength(2)
+    expect(
+      screen.getByRole("link", { name: "Swap the office plant" }),
+    ).toHaveAttribute("href", "/heists/h1")
+    expect(
+      screen.getByRole("link", { name: "Jelly in the stapler" }),
+    ).toHaveAttribute("href", "/heists/h2")
+    expect(screen.getAllByText("success")).toHaveLength(2)
     expect(screen.queryByText("Secret details")).not.toBeInTheDocument()
   })
 

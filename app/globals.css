@@ -50,6 +50,9 @@ svg.logo {
 .preview-grid-3 {
   @apply grid grid-cols-1 gap-4 mt-6 md:grid-cols-3;
 }
+.preview-stack {
+  @apply flex flex-col gap-3 mt-6;
+}
 .heist-card {
   @apply flex h-full min-h-44 flex-col gap-3 rounded-[10px] border border-outline bg-lighter p-5;
 }

@@ -1,5 +1,6 @@
 "use client"
 
+import ExpiredHeistCard from "@/components/ExpiredHeistCard"
 import HeistCard from "@/components/HeistCard"
 import HeistCardSkeleton from "@/components/HeistCardSkeleton"
 import useHeists from "@/hooks/useHeists"
@@ -61,10 +62,13 @@ export default function HeistList({ type }: HeistListProps) {
     )
   }
 
+  // only the expired type gets here, active and assigned returned above
   return (
-    <ul className={styles.list}>
+    <ul className={styles.stack}>
       {heists.map((heist) => (
-        <li key={heist.id}>{heist.title}</li>
+        <li key={heist.id}>
+          <ExpiredHeistCard heist={heist} />
+        </li>
       ))}
     </ul>
   )

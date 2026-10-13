@@ -1,7 +1,7 @@
 @reference "../../app/globals.css";
 
-.list {
-  @apply mt-2 flex flex-col gap-1 text-heading;
+.stack {
+  @apply mt-4 flex list-none flex-col gap-3;
 }
 
 .grid {

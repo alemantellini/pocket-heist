@@ -2,6 +2,7 @@
 
 import Avatar from "@/components/Avatar";
 import AuthForm from "@/components/AuthForm";
+import ExpiredHeistCard from "@/components/ExpiredHeistCard";
 import HeistCard from "@/components/HeistCard";
 import HeistCardSkeleton from "@/components/HeistCardSkeleton";
 import Skeleton from "@/components/Skeleton";
@@ -46,6 +47,31 @@ export default function PreviewPage() {
         <HeistCardSkeleton />
         <HeistCardSkeleton />
         <HeistCardSkeleton />
+      </div>
+      <h3>Expired heist cards</h3>
+      <div className="preview-stack">
+        <ExpiredHeistCard
+          heist={{
+            ...previewHeist,
+            deadline: new Date("2020-01-01T09:00:00"),
+            finalStatus: "success",
+          }}
+        />
+        <ExpiredHeistCard
+          heist={{
+            ...previewHeist,
+            title: "Jelly in the stapler",
+            deadline: new Date("2020-01-02T09:00:00"),
+            finalStatus: "failure",
+          }}
+        />
+        <ExpiredHeistCard
+          heist={{
+            ...previewHeist,
+            title: "Leave a mystery sticky note on someone's desk",
+            deadline: new Date("2020-01-03T09:00:00"),
+          }}
+        />
       </div>
       <div className="preview-grid">
         <Avatar name="mario" />

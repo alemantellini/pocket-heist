@@ -1,0 +1,30 @@
+@reference "../../app/globals.css";
+
+/* same box as HeistCard so the grid doesn't jump when data loads */
+.card {
+  @apply flex h-full min-h-44 flex-col gap-3 rounded-[10px] border border-outline bg-lighter p-5;
+}
+
+.titleLines {
+  @apply flex flex-col gap-2;
+}
+
+.line {
+  @apply h-5 w-full animate-pulse rounded-md bg-outline;
+}
+
+.shortLine {
+  @apply h-5 w-2/3 animate-pulse rounded-md bg-outline;
+}
+
+.meta {
+  @apply mt-1 flex flex-col gap-2;
+}
+
+.metaLine {
+  @apply h-4 w-3/4 animate-pulse rounded-md bg-outline;
+}
+
+.metaLineShort {
+  @apply h-4 w-1/2 animate-pulse rounded-md bg-outline;
+}

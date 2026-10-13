@@ -4,6 +4,10 @@
   @apply mt-2 flex flex-col gap-1 text-heading;
 }
 
+.grid {
+  @apply mt-4 grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3;
+}
+
 .message {
   @apply mt-2 text-sm;
 }

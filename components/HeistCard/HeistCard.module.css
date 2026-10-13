@@ -1,0 +1,48 @@
+@reference "../../app/globals.css";
+
+/* design from Figma: Pocket-Heist, HeistCard (node 1:94) */
+.card {
+  @apply flex h-full min-h-44 flex-col gap-3 rounded-[10px] border border-outline bg-lighter p-5;
+}
+
+.titleRow {
+  @apply flex items-start justify-between gap-2;
+}
+
+.title {
+  @apply min-w-0 text-base tracking-[-0.3125px];
+}
+
+.link {
+  @apply line-clamp-2 wrap-anywhere text-heading;
+  &:hover {
+    @apply text-primary;
+  }
+  &:focus-visible {
+    @apply rounded-sm outline-2 outline-offset-2 outline-primary;
+  }
+}
+
+.clock {
+  @apply mt-1 shrink-0 text-primary;
+}
+
+.meta {
+  @apply flex flex-col gap-2;
+}
+
+.metaItem {
+  @apply flex items-center gap-2 text-sm tracking-[-0.15px] text-body;
+}
+
+.assignee {
+  @apply text-primary;
+}
+
+.creator {
+  @apply text-secondary;
+}
+
+.timeLeft {
+  @apply text-primary;
+}

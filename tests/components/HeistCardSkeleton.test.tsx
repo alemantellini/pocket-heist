@@ -18,6 +18,6 @@ describe("HeistCardSkeleton", () => {
     render(<HeistCardSkeleton />)
 
     expect(screen.queryByRole("link")).not.toBeInTheDocument()
-    expect(screen.getByTestId("heist-card-skeleton")).toHaveTextContent("")
+    expect(screen.getByTestId("heist-card-skeleton").textContent).toBe("")
   })
 })

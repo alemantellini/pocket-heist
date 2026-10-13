@@ -10,7 +10,7 @@ type HeistCardProps = {
 
 export default function HeistCard({ heist }: HeistCardProps) {
   return (
-    <article className={styles.card}>
+    <article className="heist-card">
       <div className={styles.titleRow}>
         <h3 className={styles.title}>
           <Link href={`/heists/${heist.id}`} className={styles.link}>

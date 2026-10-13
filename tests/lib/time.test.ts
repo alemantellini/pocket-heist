@@ -15,7 +15,7 @@ describe("formatTimeLeft", () => {
     expect(formatTimeLeft(now, now)).toBe("Overdue")
   })
 
-  it("shows minutes only when under an hour", () => {
+  it("shows 0h and the minutes when under an hour", () => {
     expect(formatTimeLeft(inMs(42 * MINUTE), now)).toBe("0h 42m")
   })
 

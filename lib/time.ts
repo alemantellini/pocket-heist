@@ -12,7 +12,7 @@ const DEADLINE_FORMAT = new Intl.DateTimeFormat("en-US", {
 // e.g. "Dec 5, 05:00 PM"
 export function formatDeadline(date: Date): string {
   // newer ICU versions put a narrow no-break space before AM/PM
-  return DEADLINE_FORMAT.format(date).replace(/ /g, " ")
+  return DEADLINE_FORMAT.format(date).replace(/\u202f/g, " ")
 }
 
 // e.g. "1d 4h", "4h 42m", or "Overdue" once the deadline has passed

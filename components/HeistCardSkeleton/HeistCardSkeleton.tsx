@@ -3,7 +3,7 @@ import styles from "./HeistCardSkeleton.module.css"
 export default function HeistCardSkeleton() {
   return (
     <div
-      className={styles.card}
+      className="heist-card"
       aria-hidden="true"
       data-testid="heist-card-skeleton"
     >

@@ -1,9 +1,7 @@
 @reference "../../app/globals.css";
 
-/* design from Figma: Pocket-Heist, HeistCard (node 1:94) */
-.card {
-  @apply flex h-full min-h-44 flex-col gap-3 rounded-[10px] border border-outline bg-lighter p-5;
-}
+/* design from Figma: Pocket-Heist, HeistCard (node 1:94); the card box itself
+   is the shared .heist-card class in globals.css, also used by the skeleton */
 
 .titleRow {
   @apply flex items-start justify-between gap-2;

@@ -1,20 +1,24 @@
 @reference "../../app/globals.css";
 
-/* same box as HeistCard so the grid doesn't jump when data loads */
-.card {
-  @apply flex h-full min-h-44 flex-col gap-3 rounded-[10px] border border-outline bg-lighter p-5;
-}
+/* the skeleton box is the shared .heist-card class in globals.css, so it always
+   matches HeistCard and the grid doesn't jump when data loads */
 
 .titleLines {
   @apply flex flex-col gap-2;
 }
 
+.bar {
+  @apply rounded-md bg-outline motion-safe:animate-pulse;
+}
+
 .line {
-  @apply h-5 w-full motion-safe:animate-pulse rounded-md bg-outline;
+  composes: bar;
+  @apply h-5 w-full;
 }
 
 .shortLine {
-  @apply h-5 w-2/3 motion-safe:animate-pulse rounded-md bg-outline;
+  composes: bar;
+  @apply h-5 w-2/3;
 }
 
 .meta {
@@ -22,9 +26,11 @@
 }
 
 .metaLine {
-  @apply h-4 w-3/4 motion-safe:animate-pulse rounded-md bg-outline;
+  composes: bar;
+  @apply h-4 w-3/4;
 }
 
 .metaLineShort {
-  @apply h-4 w-1/2 motion-safe:animate-pulse rounded-md bg-outline;
+  composes: bar;
+  @apply h-4 w-1/2;
 }

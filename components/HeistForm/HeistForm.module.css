@@ -1,0 +1,37 @@
+@reference "../../app/globals.css";
+
+.heistForm {
+  @apply mx-auto mt-6 w-full max-w-lg;
+}
+
+.form {
+  @apply flex flex-col gap-4;
+}
+
+.error {
+  @apply text-error;
+}
+
+.field {
+  @apply flex flex-col gap-1 text-sm;
+
+  & input,
+  & select,
+  & textarea {
+    @apply w-full rounded-md border border-lighter bg-lighter px-3 py-2 text-heading;
+    &:focus {
+      @apply border-primary outline-none;
+    }
+    &:disabled {
+      @apply cursor-not-allowed opacity-60;
+    }
+  }
+
+  & textarea {
+    @apply resize-y;
+  }
+}
+
+.retry {
+  @apply mt-1 cursor-pointer text-primary underline;
+}

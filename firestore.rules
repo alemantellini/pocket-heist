@@ -2,16 +2,50 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // a user can read and write only their own document, which holds exactly
-    // their id and codename (never an email)
+    // any signed-in user can read user documents (needed to pick who to assign
+    // a heist to); they hold only an id and codename, never an email.
+    // a user can write only their own document.
     match /users/{uid} {
-      allow read: if request.auth != null && request.auth.uid == uid;
+      allow read: if request.auth != null;
       allow create, update: if request.auth != null
         && request.auth.uid == uid
         && request.resource.data.keys().hasOnly(['id', 'codename'])
         && request.resource.data.keys().hasAll(['id', 'codename'])
         && request.resource.data.id == request.auth.uid
         && request.resource.data.codename is string;
+    }
+
+    // heists can be created by a signed-in user as themselves; reads, updates
+    // and deletes are denied until the features that need them exist
+    match /heists/{heistId} {
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly([
+          'title', 'description', 'createdBy', 'createdByCodename',
+          'assignedTo', 'assignedToCodename', 'createdAt', 'deadline',
+          'finalStatus'
+        ])
+        && request.resource.data.keys().hasAll([
+          'title', 'description', 'createdBy', 'createdByCodename',
+          'assignedTo', 'assignedToCodename', 'createdAt', 'deadline',
+          'finalStatus'
+        ])
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.assignedTo is string
+        && request.resource.data.assignedTo != request.auth.uid
+        && request.resource.data.createdByCodename is string
+        && request.resource.data.assignedToCodename is string
+        && request.resource.data.title is string
+        && request.resource.data.title.size() >= 3
+        && request.resource.data.title.size() <= 80
+        && request.resource.data.description is string
+        && request.resource.data.description.size() >= 1
+        && request.resource.data.description.size() <= 500
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.deadline is timestamp
+        // about 48h ahead; the client clock is not exact, so allow a margin
+        && request.resource.data.deadline > request.time + duration.value(47, 'h')
+        && request.resource.data.deadline < request.time + duration.value(49, 'h')
+        && request.resource.data.finalStatus == null;
     }
   }
 }

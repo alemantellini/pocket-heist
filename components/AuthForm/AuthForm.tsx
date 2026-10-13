@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { FormEvent } from "react"
 import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react"
+import { logIn } from "@/lib/login"
 import { getAuthErrorMessage, signUp } from "@/lib/signup"
 import styles from "./AuthForm.module.css"
 
@@ -14,6 +15,7 @@ type AuthFormProps = {
 const COPY = {
   login: {
     submit: "Log in",
+    pending: "Logging in…",
     prompt: "Don't have an account?",
     switchLabel: "Sign up",
     switchHref: "/signup",
@@ -21,6 +23,7 @@ const COPY = {
   },
   signup: {
     submit: "Sign up",
+    pending: "Signing up…",
     prompt: "Already have an account?",
     switchLabel: "Log in",
     switchHref: "/login",
@@ -36,9 +39,17 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [passwordError, setPasswordError] = useState("")
   const [formError, setFormError] = useState("")
   const [pending, setPending] = useState(false)
+  // set after a successful login; replaces the form with a welcome message
+  const [welcome, setWelcome] = useState<{ name: string | null } | null>(null)
+  const welcomeRef = useRef<HTMLDivElement>(null)
   const copy = COPY[mode]
   const passwordId = `${mode}-password`
   const errorId = `${passwordId}-error`
+
+  // the form disappears on success, so move focus to the message
+  useEffect(() => {
+    if (welcome) welcomeRef.current?.focus()
+  }, [welcome])
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -55,22 +66,33 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
     setPasswordError("")
 
-    if (mode === "login") {
-      // temporary placeholder until the login flow is wired in
-      console.log({ email, password })
-      return
-    }
-
     setFormError("")
     setPending(true)
 
     try {
-      await signUp(email, password)
+      if (mode === "login") {
+        setWelcome({ name: await logIn(email, password) })
+      } else {
+        await signUp(email, password)
+      }
     } catch (error) {
       setFormError(getAuthErrorMessage(error))
     } finally {
       setPending(false)
     }
+  }
+
+  if (welcome) {
+    return (
+      <div
+        ref={welcomeRef}
+        role="status"
+        tabIndex={-1}
+        className={styles.success}
+      >
+        {welcome.name ? `Welcome back, ${welcome.name}!` : "Welcome back!"}
+      </div>
+    )
   }
 
   return (
@@ -124,7 +146,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
         )}
 
         <button type="submit" className="btn" disabled={pending}>
-          {pending ? "Signing up…" : copy.submit}
+          {pending ? copy.pending : copy.submit}
         </button>
       </form>
 

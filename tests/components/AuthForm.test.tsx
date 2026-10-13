@@ -2,8 +2,9 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 
-const { createUser, updateProfile, setDoc, doc } = vi.hoisted(() => ({
+const { createUser, signIn, updateProfile, setDoc, doc } = vi.hoisted(() => ({
   createUser: vi.fn(),
+  signIn: vi.fn(),
   updateProfile: vi.fn(),
   setDoc: vi.fn(),
   doc: vi.fn(),
@@ -11,6 +12,7 @@ const { createUser, updateProfile, setDoc, doc } = vi.hoisted(() => ({
 
 vi.mock("firebase/auth", () => ({
   createUserWithEmailAndPassword: createUser,
+  signInWithEmailAndPassword: signIn,
   updateProfile,
 }))
 vi.mock("firebase/firestore", () => ({ doc, setDoc }))
@@ -28,9 +30,17 @@ async function fillAndSubmitSignup(password = "longenough") {
   await user.click(screen.getByRole("button", { name: "Sign up" }))
 }
 
+async function fillAndSubmitLogin(password = "secret123") {
+  const user = userEvent.setup()
+  await user.type(screen.getByLabelText("Email"), "mario@example.com")
+  await user.type(screen.getByLabelText("Password"), password)
+  await user.click(screen.getByRole("button", { name: "Log in" }))
+}
+
 describe("AuthForm", () => {
   beforeEach(() => {
     createUser.mockResolvedValue({ user: firebaseUser })
+    signIn.mockResolvedValue({ user: { displayName: "SilentCopperFox" } })
     updateProfile.mockResolvedValue(undefined)
     setDoc.mockResolvedValue(undefined)
     doc.mockReturnValue("users/u1")
@@ -75,19 +85,59 @@ describe("AuthForm", () => {
     )
   })
 
-  it("logs the entered email and password on submit", async () => {
-    const user = userEvent.setup()
+  it("signs in with the entered email and password", async () => {
     const log = vi.spyOn(console, "log").mockImplementation(() => {})
     render(<AuthForm mode="login" />)
 
-    await user.type(screen.getByLabelText("Email"), "mario@example.com")
-    await user.type(screen.getByLabelText("Password"), "secret123")
-    await user.click(screen.getByRole("button", { name: "Log in" }))
+    await fillAndSubmitLogin()
 
-    expect(log).toHaveBeenCalledWith({
-      email: "mario@example.com",
-      password: "secret123",
-    })
+    expect(signIn).toHaveBeenCalledWith({}, "mario@example.com", "secret123")
+    expect(log).not.toHaveBeenCalled()
+  })
+
+  it("replaces the form with a focused welcome message after login", async () => {
+    render(<AuthForm mode="login" />)
+
+    await fillAndSubmitLogin()
+
+    const status = await screen.findByRole("status")
+    expect(status).toHaveTextContent("Welcome back, SilentCopperFox!")
+    expect(status).toHaveFocus()
+    expect(screen.queryByLabelText("Email")).not.toBeInTheDocument()
+  })
+
+  it("shows a generic welcome when the user has no display name", async () => {
+    signIn.mockResolvedValue({ user: { displayName: null } })
+    render(<AuthForm mode="login" />)
+
+    await fillAndSubmitLogin()
+
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      /^Welcome back!$/,
+    )
+  })
+
+  it("shows one generic error for wrong credentials and keeps the email", async () => {
+    signIn.mockRejectedValue({ code: "auth/invalid-credential" })
+    render(<AuthForm mode="login" />)
+
+    await fillAndSubmitLogin()
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Incorrect email or password",
+    )
+    expect(screen.getByLabelText("Email")).toHaveValue("mario@example.com")
+    expect(screen.getByRole("button", { name: "Log in" })).toBeEnabled()
+    expect(screen.queryByRole("status")).not.toBeInTheDocument()
+  })
+
+  it("disables the button while login is pending", async () => {
+    signIn.mockReturnValue(new Promise(() => {}))
+    render(<AuthForm mode="login" />)
+
+    await fillAndSubmitLogin()
+
+    expect(screen.getByRole("button", { name: "Logging in…" })).toBeDisabled()
   })
 
   it("shows an inline error and does not submit a short signup password", async () => {
@@ -168,16 +218,12 @@ describe("AuthForm", () => {
   })
 
   it("does not enforce a minimum length on login", async () => {
-    const user = userEvent.setup()
-    const log = vi.spyOn(console, "log").mockImplementation(() => {})
     render(<AuthForm mode="login" />)
 
-    await user.type(screen.getByLabelText("Email"), "mario@example.com")
-    await user.type(screen.getByLabelText("Password"), "short")
-    await user.click(screen.getByRole("button", { name: "Log in" }))
+    await fillAndSubmitLogin("short")
 
     expect(screen.queryByRole("alert")).not.toBeInTheDocument()
-    expect(log).toHaveBeenCalled()
+    expect(signIn).toHaveBeenCalledWith({}, "mario@example.com", "short")
   })
 
   it("places the switch link outside the form", () => {

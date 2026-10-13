@@ -9,6 +9,13 @@ const ERROR_MESSAGES: Record<string, string> = {
   "auth/weak-password": "That password is too weak, try a longer one",
   "auth/network-request-failed":
     "Network error, check your connection and try again",
+  // one message for wrong password and unknown email so neither is revealed
+  "auth/invalid-credential": "Incorrect email or password",
+  "auth/wrong-password": "Incorrect email or password",
+  "auth/user-not-found": "Incorrect email or password",
+  "auth/too-many-requests":
+    "Too many attempts, please wait a moment and try again",
+  "auth/user-disabled": "This account has been disabled",
   "permission-denied": "We couldn't save your profile, please try again",
 }
 

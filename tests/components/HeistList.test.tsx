@@ -55,7 +55,10 @@ describe("HeistList", () => {
       render(<HeistList type={type} />)
 
       expect(screen.getAllByTestId("heist-card-skeleton")).toHaveLength(3)
-      expect(screen.queryByText("Loading heists…")).not.toBeInTheDocument()
+      // the skeletons are hidden from assistive tech, so the loading state is
+      // announced through a status region instead
+      expect(screen.getByRole("status")).toHaveAttribute("aria-busy", "true")
+      expect(screen.getByRole("status")).toHaveTextContent("Loading heists…")
     },
   )
 

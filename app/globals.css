@@ -48,7 +48,7 @@ svg.logo {
   @apply grid grid-cols-2 gap-6 mt-6;
 }
 .preview-grid-3 {
-  @apply grid grid-cols-3 gap-4 mt-6;
+  @apply grid grid-cols-1 gap-4 mt-6 md:grid-cols-3;
 }
 .btn {
   @apply inline-block rounded-md bg-primary px-4 py-2 font-semibold text-heading transition-colors;

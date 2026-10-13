@@ -36,7 +36,8 @@ export default function HeistList({ type }: HeistListProps) {
     }
 
     return (
-      <div className={styles.grid}>
+      <div className={styles.grid} role="status" aria-busy="true">
+        <span className={styles.srOnly}>Loading heists…</span>
         {Array.from({ length: SKELETON_COUNT }, (_, index) => (
           <HeistCardSkeleton key={index} />
         ))}

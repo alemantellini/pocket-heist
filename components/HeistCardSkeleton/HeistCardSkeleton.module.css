@@ -10,11 +10,11 @@
 }
 
 .line {
-  @apply h-5 w-full animate-pulse rounded-md bg-outline;
+  @apply h-5 w-full motion-safe:animate-pulse rounded-md bg-outline;
 }
 
 .shortLine {
-  @apply h-5 w-2/3 animate-pulse rounded-md bg-outline;
+  @apply h-5 w-2/3 motion-safe:animate-pulse rounded-md bg-outline;
 }
 
 .meta {
@@ -22,9 +22,9 @@
 }
 
 .metaLine {
-  @apply h-4 w-3/4 animate-pulse rounded-md bg-outline;
+  @apply h-4 w-3/4 motion-safe:animate-pulse rounded-md bg-outline;
 }
 
 .metaLineShort {
-  @apply h-4 w-1/2 animate-pulse rounded-md bg-outline;
+  @apply h-4 w-1/2 motion-safe:animate-pulse rounded-md bg-outline;
 }

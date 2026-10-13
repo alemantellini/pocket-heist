@@ -1,0 +1,132 @@
+@reference "../globals.css";
+
+.page {
+  @apply mx-auto flex min-h-lvh max-w-6xl flex-col px-6 py-6;
+}
+
+.topbar {
+  @apply flex items-center justify-between;
+}
+
+.wordmark {
+  @apply text-2xl font-bold text-heading;
+}
+
+.topLink {
+  @apply rounded-md px-2 py-1 text-body transition-colors;
+  &:hover {
+    @apply text-heading;
+  }
+}
+
+.hero {
+  @apply grid flex-1 items-center gap-14 py-14 lg:grid-cols-[1.1fr_0.9fr];
+}
+
+.headline {
+  @apply text-5xl font-extrabold leading-[1.05] tracking-tight text-heading md:text-6xl;
+}
+
+.line {
+  @apply block;
+}
+
+.lede {
+  @apply mt-6 max-w-lg text-lg leading-relaxed;
+}
+
+.actions {
+  @apply mt-8 flex flex-wrap items-center gap-x-6 gap-y-3;
+}
+
+/* dark text on the purple keeps the button readable; hover matches .btn */
+.cta {
+  @apply inline-block rounded-md bg-primary px-7 py-3 text-lg font-semibold text-dark transition-colors;
+  &:hover {
+    @apply bg-secondary;
+  }
+}
+
+.cta:focus-visible,
+.topLink:focus-visible,
+.loginPrompt a:focus-visible {
+  @apply outline-2 outline-offset-4 outline-primary;
+}
+
+.loginPrompt a {
+  @apply text-heading underline underline-offset-4;
+}
+
+/* the sample heist: the one memorable thing on the page */
+.ticket {
+  @apply relative mx-auto w-full max-w-md rounded-2xl border border-white/10 bg-lighter p-7 shadow-2xl shadow-primary/15 lg:rotate-2;
+}
+
+.ticketTitle {
+  @apply text-xl font-bold leading-snug;
+}
+
+.ticketBrief {
+  @apply mt-2 text-sm leading-relaxed;
+}
+
+/* perforation with a notch cut out of each side edge */
+.tear {
+  @apply relative my-6 border-t-2 border-dashed border-white/15;
+  &::before,
+  &::after {
+    @apply absolute -top-3 size-6 rounded-full bg-dark content-[''];
+  }
+  &::before {
+    @apply -left-10;
+  }
+  &::after {
+    @apply -right-10;
+  }
+}
+
+.timeLeft {
+  @apply flex items-end justify-between gap-4;
+}
+
+.label {
+  @apply text-sm text-body;
+}
+
+.countdown {
+  @apply text-5xl font-bold tabular-nums text-heading;
+}
+
+.status {
+  @apply rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary;
+}
+
+.people {
+  @apply mt-6 grid grid-cols-2 gap-4;
+}
+
+.person {
+  @apply mt-1 font-medium text-heading break-words;
+}
+
+.steps {
+  @apply grid gap-8 border-t border-white/10 py-12 md:grid-cols-3;
+  counter-reset: step;
+}
+
+.step {
+  @apply list-none;
+  counter-increment: step;
+  &::before {
+    @apply mb-4 flex size-9 items-center justify-center rounded-full bg-lighter font-bold text-primary;
+    content: counter(step);
+  }
+}
+
+.stepTitle {
+  @apply text-lg font-bold;
+}
+
+.stepText {
+  @apply mt-2 leading-relaxed;
+}

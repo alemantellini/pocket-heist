@@ -1,6 +1,10 @@
 {
   "permissions": {
-    "allow": ["WebSearch", "Bash(git init)", "Bash(git switch:*)"]
+    "allow": [
+      "WebSearch",
+      "Bash(git init)",
+      "Bash(git switch:*)"
+    ]
   },
   "hooks": {
     "PostToolUse": [
@@ -14,5 +18,8 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "frontend-design@anthropic-plugin-directory": true
   }
 }

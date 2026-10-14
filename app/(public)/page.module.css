@@ -1,7 +1,7 @@
 @reference "../globals.css";
 
 .page {
-  @apply mx-auto flex min-h-lvh max-w-6xl flex-col px-6 py-6;
+  @apply mx-auto flex min-h-lvh max-w-6xl flex-col px-8 py-10;
 }
 
 .topbar {
@@ -20,7 +20,7 @@
 }
 
 .hero {
-  @apply grid flex-1 items-center gap-14 py-14 lg:grid-cols-[1.1fr_0.9fr];
+  @apply grid flex-1 items-center gap-20 py-24 lg:grid-cols-[1.1fr_0.9fr];
 }
 
 .headline {
@@ -32,11 +32,11 @@
 }
 
 .lede {
-  @apply mt-6 max-w-lg text-lg leading-relaxed;
+  @apply mt-10 max-w-lg text-lg leading-relaxed;
 }
 
 .actions {
-  @apply mt-8 flex flex-wrap items-center gap-x-6 gap-y-3;
+  @apply mt-12 flex flex-wrap items-center gap-x-8 gap-y-4;
 }
 
 /* dark text on the purple keeps the button readable; hover matches .btn */
@@ -59,7 +59,7 @@
 
 /* the sample heist: the one memorable thing on the page */
 .ticket {
-  @apply relative mx-auto w-full max-w-md rounded-2xl border border-white/10 bg-lighter p-7 shadow-2xl shadow-primary/15 lg:rotate-2;
+  @apply relative mx-auto w-full max-w-md rounded-2xl border border-white/10 bg-lighter p-10 shadow-2xl shadow-primary/15 lg:rotate-2;
 }
 
 .ticketTitle {
@@ -67,21 +67,21 @@
 }
 
 .ticketBrief {
-  @apply mt-2 text-sm leading-relaxed;
+  @apply mt-3 text-sm leading-relaxed;
 }
 
 /* perforation with a notch cut out of each side edge */
 .tear {
-  @apply relative my-6 border-t-2 border-dashed border-white/15;
+  @apply relative my-8 border-t-2 border-dashed border-white/15;
   &::before,
   &::after {
     @apply absolute -top-3 size-6 rounded-full bg-dark content-[''];
   }
   &::before {
-    @apply -left-10;
+    @apply -left-13;
   }
   &::after {
-    @apply -right-10;
+    @apply -right-13;
   }
 }
 
@@ -102,7 +102,7 @@
 }
 
 .people {
-  @apply mt-6 grid grid-cols-2 gap-4;
+  @apply mt-8 grid grid-cols-2 gap-6;
 }
 
 .person {
@@ -110,7 +110,7 @@
 }
 
 .steps {
-  @apply grid gap-8 border-t border-white/10 py-12 md:grid-cols-3;
+  @apply grid mt-8 gap-12 border-t border-white/10 py-20 md:grid-cols-3;
   counter-reset: step;
 }
 
@@ -118,7 +118,7 @@
   @apply list-none;
   counter-increment: step;
   &::before {
-    @apply mb-4 flex size-9 items-center justify-center rounded-full bg-lighter font-bold text-primary;
+    @apply mb-6 flex size-9 items-center justify-center rounded-full bg-lighter font-bold text-primary;
     content: counter(step);
   }
 }
@@ -128,5 +128,5 @@
 }
 
 .stepText {
-  @apply mt-2 leading-relaxed;
+  @apply mt-3 leading-relaxed;
 }

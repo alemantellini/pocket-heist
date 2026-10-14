@@ -1,8 +1,13 @@
 "use client"
 
-import { Calendar, Clock, User } from "lucide-react"
+import { Calendar, Clock, FileText, User, Users } from "lucide-react"
+import Avatar from "@/components/Avatar"
 import useHeist from "@/hooks/useHeist"
-import { formatDeadline, formatTimeLeft } from "@/lib/time"
+import {
+  formatDeadline,
+  formatFullDeadline,
+  formatTimeRemaining,
+} from "@/lib/time"
 import styles from "./HeistDetails.module.css"
 
 type HeistDetailsProps = {
@@ -34,47 +39,65 @@ export default function HeistDetails({ id }: HeistDetailsProps) {
     return <p className={styles.message}>Heist not found</p>
   }
 
+  const assignee = heist.assignedToCodename || "unknown"
+  const creator = heist.createdByCodename || "unknown"
+
   return (
     <article className={styles.details}>
-      <h2 className={styles.title}>{heist.title}</h2>
-      <dl className={styles.meta}>
-        <div className={styles.metaItem}>
-          <dt>
+      <header className={styles.header}>
+        <h2 className={styles.title}>{heist.title}</h2>
+        <p className={styles.timeLeft}>
+          <Clock size={16} aria-hidden="true" />
+          {formatTimeRemaining(heist.deadline)}
+        </p>
+      </header>
+      <div className={styles.people}>
+        <section className={styles.card}>
+          <h3 className={styles.label}>
             <User size={14} aria-hidden="true" />
             Assigned to
-          </dt>
-          <dd className={styles.assignee}>
-            @{heist.assignedToCodename || "unknown"}
-          </dd>
-        </div>
-        <div className={styles.metaItem}>
-          <dt>
-            <User size={14} aria-hidden="true" />
+          </h3>
+          <div className={styles.person}>
+            <Avatar name={assignee} />
+            <span className={styles.codename}>{assignee}</span>
+          </div>
+        </section>
+        <section className={styles.card}>
+          <h3 className={styles.label}>
+            <Users size={14} aria-hidden="true" />
             Created by
-          </dt>
-          <dd className={styles.creator}>
-            @{heist.createdByCodename || "unknown"}
-          </dd>
-        </div>
-        <div className={styles.metaItem}>
-          <dt>
-            <Calendar size={14} aria-hidden="true" />
-            Deadline
-          </dt>
-          <dd>{formatDeadline(heist.deadline)}</dd>
-        </div>
-        <div className={styles.metaItem}>
-          <dt>
-            <Clock size={14} aria-hidden="true" />
-            Time left
-          </dt>
-          <dd className={styles.timeLeft}>{formatTimeLeft(heist.deadline)}</dd>
-        </div>
-      </dl>
-      <section className={styles.description}>
-        <h3>Details</h3>
-        <p>{heist.description}</p>
+          </h3>
+          <div className={styles.person}>
+            <Avatar name={creator} />
+            <span className={styles.codename}>{creator}</span>
+          </div>
+        </section>
+      </div>
+      <section className={styles.card}>
+        <h3 className={styles.missionTitle}>
+          <FileText size={18} aria-hidden="true" />
+          Mission Details
+        </h3>
+        <p className={styles.description}>{heist.description}</p>
       </section>
+      <footer className={styles.dates}>
+        {heist.createdAt && (
+          <p className={styles.date}>
+            <Calendar size={14} aria-hidden="true" />
+            Created:
+            <span className={styles.dateValue}>
+              {formatDeadline(heist.createdAt)}
+            </span>
+          </p>
+        )}
+        <p className={styles.date}>
+          <Clock size={14} aria-hidden="true" />
+          Deadline:
+          <span className={styles.dateValue}>
+            {formatFullDeadline(heist.deadline)}
+          </span>
+        </p>
+      </footer>
     </article>
   )
 }

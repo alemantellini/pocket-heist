@@ -1,63 +1,78 @@
 @reference "../../app/globals.css";
 
+/* design from a reference screenshot: title and time-remaining pill, two
+   person cards, a "Mission Details" card, then a dates footer */
+
 .details {
-  @apply flex flex-col rounded-[10px] border border-outline bg-lighter gap-6 p-8;
+  @apply flex flex-col gap-4;
+}
+
+.header {
+  @apply flex items-center justify-between gap-4;
 }
 
 .title {
-  @apply text-2xl font-bold wrap-anywhere;
-}
-
-.meta {
-  @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
-}
-
-.metaItem {
-  @apply flex flex-col gap-1;
-}
-
-.metaItem dt {
-  @apply flex items-center gap-2 text-sm;
-}
-
-.metaItem dd {
-  @apply text-base text-heading;
-}
-
-.assignee {
-  @apply text-primary;
-}
-
-.creator {
-  @apply text-secondary;
+  @apply min-w-0 text-3xl font-bold wrap-anywhere;
 }
 
 .timeLeft {
+  @apply flex shrink-0 items-center gap-2 rounded-lg border border-primary/40 bg-primary/10 px-4 py-2 text-sm text-primary;
+}
+
+.people {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+}
+
+.card {
+  @apply flex flex-col gap-3 rounded-lg border border-outline bg-light p-5;
+}
+
+.label {
+  @apply flex items-center gap-2 text-xs font-normal uppercase tracking-wide text-body;
+}
+
+.person {
+  @apply flex items-center gap-3;
+}
+
+.codename {
+  @apply min-w-0 font-semibold text-heading wrap-anywhere;
+}
+
+.missionTitle {
+  @apply flex items-center gap-2 text-lg font-semibold;
+}
+
+.missionTitle svg {
   @apply text-primary;
 }
 
 .description {
-  @apply flex flex-col gap-2;
+  @apply whitespace-pre-wrap wrap-anywhere leading-relaxed text-body;
 }
 
-.description h3 {
-  @apply text-lg font-semibold;
+.dates {
+  @apply mt-2 flex flex-wrap items-center gap-6 border-t border-outline pt-5 text-sm;
 }
 
-.description p {
-  @apply whitespace-pre-wrap wrap-anywhere text-body;
+.date {
+  @apply flex items-center gap-2;
+}
+
+.dateValue {
+  @apply text-heading;
 }
 
 .loading {
-  @apply flex flex-col rounded-[10px] border border-outline bg-lighter gap-6 p-8;
+  @apply flex flex-col gap-4;
 }
 
 .titleSkeleton {
-  @apply h-8 w-2/3 animate-pulse rounded-md bg-outline;
+  @apply h-9 w-2/3 animate-pulse rounded-md bg-outline;
 }
 
 .bodySkeleton {
-  @apply h-32 w-full animate-pulse rounded-md bg-outline;
+  @apply h-48 w-full animate-pulse rounded-md bg-outline;
 }
 
 .srOnly {

@@ -12,8 +12,8 @@ const heist = {
   id: "h1",
   title: "Swap the office plant",
   description: "Replace it with a convincing fake",
-  createdByCodename: "shadowfox",
-  assignedToCodename: "quietowl",
+  createdByCodename: "ShadowFox",
+  assignedToCodename: "QuietOwl",
   createdAt: new Date(),
   deadline: new Date(Date.now() + 5 * 60 * 60 * 1000 + 30 * 60 * 1000),
   createdBy: "u1",
@@ -34,7 +34,7 @@ describe("HeistDetails", () => {
     expect(useHeist).toHaveBeenCalledWith("h1")
   })
 
-  it("shows the title, people, description and time left", () => {
+  it("shows the title, people, description and time remaining", () => {
     useHeist.mockReturnValue({ heist, loading: false, error: null })
 
     render(<HeistDetails id="h1" />)
@@ -42,12 +42,34 @@ describe("HeistDetails", () => {
     expect(
       screen.getByRole("heading", { name: "Swap the office plant" }),
     ).toBeInTheDocument()
-    expect(screen.getByText("@quietowl")).toBeInTheDocument()
-    expect(screen.getByText("@shadowfox")).toBeInTheDocument()
+    expect(screen.getByText("Assigned to")).toBeInTheDocument()
+    expect(screen.getByText("QuietOwl")).toBeInTheDocument()
+    expect(screen.getByText("Created by")).toBeInTheDocument()
+    expect(screen.getByText("ShadowFox")).toBeInTheDocument()
+    expect(
+      screen.getByRole("heading", { name: "Mission Details" }),
+    ).toBeInTheDocument()
     expect(
       screen.getByText("Replace it with a convincing fake"),
     ).toBeInTheDocument()
-    expect(screen.getByText(/^5h \d+m$/)).toBeInTheDocument()
+    expect(screen.getByText("5 hours remaining")).toBeInTheDocument()
+  })
+
+  it("shows the created and deadline dates", () => {
+    useHeist.mockReturnValue({
+      heist: {
+        ...heist,
+        createdAt: new Date(2026, 0, 27, 9, 27),
+        deadline: new Date(2026, 0, 31, 9, 27),
+      },
+      loading: false,
+      error: null,
+    })
+
+    render(<HeistDetails id="h1" />)
+
+    expect(screen.getByText("Jan 27, 09:27 AM")).toBeInTheDocument()
+    expect(screen.getByText("Sat, Jan 31, 2026, 09:27 AM")).toBeInTheDocument()
   })
 
   it("shows Overdue once the deadline has passed", () => {

@@ -22,9 +22,9 @@ export default function Home() {
       <section className={styles.hero}>
         <div>
           <h1 className={styles.headline}>
-            <span className={styles.line}>Small steals.</span>
-            <span className={styles.line}>Big laughs.</span>
-            <span className={styles.line}>Zero HR involvement.</span>
+            <span className={styles.line}>Pilfer the pens.</span>
+            <span className={styles.line}>Plot the pranks.</span>
+            <span className={styles.line}>Plead the fifth.</span>
           </h1>
           <p className={styles.lede}>
             Pocket Heist turns office boredom into tiny, low-stakes capers.

@@ -1,10 +1,13 @@
+import type { ReactNode } from "react"
 import styles from "./Badge.module.css"
 
 type BadgeProps = {
-  children: React.ReactNode
+  children: ReactNode
   variant?: "default" | "success" | "error"
 }
 
 export default function Badge({ children, variant = "default" }: BadgeProps) {
-  return <span className={`${styles.badge} ${styles[variant]}`}>{children}</span>
+  const className = [styles.badge, styles[variant]].join(" ")
+
+  return <span className={className}>{children}</span>
 }

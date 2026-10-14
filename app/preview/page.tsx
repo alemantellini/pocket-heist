@@ -1,6 +1,7 @@
 // preview page for newly created UI components
 
 import Avatar from "@/components/Avatar";
+import Badge from "@/components/Badge";
 import AuthForm from "@/components/AuthForm";
 import ExpiredHeistCard from "@/components/ExpiredHeistCard";
 import HeistCard from "@/components/HeistCard";
@@ -27,6 +28,12 @@ export default function PreviewPage() {
     <div className="page-content">
       <h2>Preview</h2>
       <UserStatus />
+      <h3>Badges</h3>
+      <div className="preview-grid-3">
+        <Badge>Active</Badge>
+        <Badge variant="success">Success</Badge>
+        <Badge variant="error">Failed</Badge>
+      </div>
       <h3>Heist cards</h3>
       <div className="preview-grid-3">
         <HeistCard heist={previewHeist} />

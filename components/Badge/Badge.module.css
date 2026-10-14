@@ -1,0 +1,17 @@
+@reference "../../app/globals.css";
+
+.badge {
+  @apply inline-block rounded-full border px-2 py-0.5 text-xs font-medium;
+}
+
+.default {
+  @apply border-primary text-primary;
+}
+
+.success {
+  @apply border-success text-success;
+}
+
+.error {
+  @apply border-error text-error;
+}

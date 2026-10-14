@@ -1,0 +1,73 @@
+@reference "../../app/globals.css";
+
+.details {
+  @apply flex flex-col rounded-[10px] border border-outline bg-lighter gap-6 p-8;
+}
+
+.title {
+  @apply text-2xl font-bold wrap-anywhere;
+}
+
+.meta {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+}
+
+.metaItem {
+  @apply flex flex-col gap-1;
+}
+
+.metaItem dt {
+  @apply flex items-center gap-2 text-sm;
+}
+
+.metaItem dd {
+  @apply text-base text-heading;
+}
+
+.assignee {
+  @apply text-primary;
+}
+
+.creator {
+  @apply text-secondary;
+}
+
+.timeLeft {
+  @apply text-primary;
+}
+
+.description {
+  @apply flex flex-col gap-2;
+}
+
+.description h3 {
+  @apply text-lg font-semibold;
+}
+
+.description p {
+  @apply whitespace-pre-wrap wrap-anywhere text-body;
+}
+
+.loading {
+  @apply flex flex-col rounded-[10px] border border-outline bg-lighter gap-6 p-8;
+}
+
+.titleSkeleton {
+  @apply h-8 w-2/3 animate-pulse rounded-md bg-outline;
+}
+
+.bodySkeleton {
+  @apply h-32 w-full animate-pulse rounded-md bg-outline;
+}
+
+.srOnly {
+  @apply sr-only;
+}
+
+.message {
+  @apply mt-2 text-sm;
+}
+
+.error {
+  @apply mt-2 text-sm text-error;
+}
